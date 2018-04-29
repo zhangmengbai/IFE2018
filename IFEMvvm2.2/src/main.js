@@ -14,16 +14,12 @@ var MyApp = san.defineComponent({
       +     '<td>{{p.name}}</td>'
       +     '<td>{{p.state}}</td>'
       +     '<td>'
-      +       '<button on-click="change" san-if="p.state=合格">{{p.operation}}</button>'
-      +       '<button on-click="change"san-elif="p.state=不合格">{{p.operation}}</button>'
-      +       '<button on-click="change" san-else="p.state=待审核">{{p.operation}}</button>'
+      +       '<button on-click="change(index)" san-if="p.state=合格">{{p.operation}}</button>'
+      +       '<button on-click="change(index)"san-elif="p.state=不合格">{{p.operation}}</button>'
+      +       '<button on-click="change(index)" san-else="p.state=待审核">{{p.operation}}</button>'
       +     '</td>'
       +   '</tr>'
       + '</table>'
-      + '<dl>'
-      +   '<dt>name - state</dt>'
-      +   '<dd san-for="p, index in persons" title="{{p.name}}">{{index + 1}}. {{p.name}}({{dept}}) - {{p.state}}</dd>'
-      + '</dl>'
       +'<div>',
   initData: function () {
     return {
@@ -36,17 +32,19 @@ var MyApp = san.defineComponent({
       ]
     };
   },
-  change: function () {
-    let sValue = this.data.get("index in persons");
+  change (index) {
+    let sValue = this.data.get("persons[" + index + "].state");
     console.log(sValue);
-    if(sValue === "合格"||"不合格"){
-      this.data.remove("persons", "index");
-    }else{
-      this.data.set("index.state", "合格");
-      this.data.set("index.operation", "删除");
+    if(sValue === '合格'||sValue === '不合格'){
+      this.data.removeAt("persons", index);
+      console.log(sValue);
+    }
+    else if(sValue === '待审核'){
+      this.data.set("persons[" + index + "].state", "合格");
+      this.data.set("persons[" + index + "].operation", "删除");
     }
   },
-  add: function () {
+  add () {
     this.data.push("persons",{name: '吃瓜群众', state: '不合格', operation: '删除'});
   }
 });
