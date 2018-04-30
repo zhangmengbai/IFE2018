@@ -77,7 +77,7 @@ parcelRequire = (function (modules, cache, entry) {
 
   // Override the current require with this new one
   return newRequire;
-})({11:[function(require,module,exports) {
+})({6:[function(require,module,exports) {
 /**
  * San
  * Copyright 2016 Baidu Inc. All rights reserved.
@@ -9327,7 +9327,7 @@ function camelComponentBinds(binds) {
     // #[end]
 })(this);
 
-},{}],6:[function(require,module,exports) {
+},{}],3:[function(require,module,exports) {
 'use strict';
 
 var _san = require('san');
@@ -9337,29 +9337,30 @@ var _san2 = _interopRequireDefault(_san);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var MyApp = _san2.default.defineComponent({
-  template: '' + '<div>' + '<button on-click="add">添加</button>' + '<table>' + '<tr>' + '<th>姓名</th>' + '<th>审核状态</th>' + '<th>操作</th>' + '</tr>' + '<tr san-for="p, index in persons">' + '<td>{{p.name}}</td>' + '<td>{{p.state}}</td>' + '<td>' + '<button on-click="change" san-if="p.state=合格">{{p.operation}}</button>' + '<button on-click="change"san-elif="p.state=不合格">{{p.operation}}</button>' + '<button on-click="change" san-else="p.state=待审核">{{p.operation}}</button>' + '</td>' + '</tr>' + '</table>' + '<dl>' + '<dt>name - state</dt>' + '<dd san-for="p, index in persons" title="{{p.name}}">{{index + 1}}. {{p.name}}({{dept}}) - {{p.state}}</dd>' + '</dl>' + '<div>',
+  template: '' + '<div class="main">' + '<button id="add" on-click="add">添加</button>' + '<table>' + '<tr>' + '<th>姓名</th>' + '<th>审核状态</th>' + '<th>操作</th>' + '</tr>' + '<tr san-for="p, index in persons">' + '<td>{{p.name}}</td>' + '<td san-if="p.status === 1">合格</td>' + '<td san-elif="p.status === 2">不合格</td>' + '<td san-else>待审核</td>' + '<td>' + '<button class="del" on-click="change(index)" san-if="p.status === 1">{{p.operation}}</button>' + '<button class="del" on-click="change(index)" san-elif="p.status === 2">{{p.operation}}</button>' + '<button class="pass" on-click="change(index)" san-else>{{p.operation}}</button>' + '</td>' + '</tr>' + '</table>' + '<div>',
   initData: function initData() {
     return {
-      persons: [{ name: '张三', state: '合格', operation: '删除' }, { name: '李四', state: '不合格', operation: '删除' }, { name: '王五', state: '待审核', operation: '审核' }, { name: '赵六', state: '待审核', operation: '审核' }, { name: '孙七', state: '待审核', operation: '审核' }]
+      persons: [{ name: '张三', status: 1, operation: '删除' }, { name: '李四', status: 2, operation: '删除' }, { name: '王五', status: 3, operation: '审核' }, { name: '赵六', status: 3, operation: '审核' }, { name: '孙七', status: 3, operation: '审核' }]
     };
   },
-  change: function change() {
-    var sValue = this.data.get("index in persons");
+  change: function change(index) {
+    var sValue = this.data.get("persons[" + index + "].status");
     console.log(sValue);
-    if (sValue === "合格" || "不合格") {
-      this.data.remove("persons", "index");
-    } else {
-      this.data.set("index.state", "合格");
-      this.data.set("index.operation", "删除");
+    if (sValue === 1 || sValue === 2) {
+      this.data.removeAt("persons", index);
+      console.log(sValue);
+    } else if (sValue === 3) {
+      this.data.set("persons[" + index + "].status", 1);
+      this.data.set("persons[" + index + "].operation", "删除");
     }
   },
   add: function add() {
-    this.data.push("persons", { name: '吃瓜群众', state: '不合格', operation: '删除' });
+    this.data.push("persons", { name: '吃瓜群众', status: 2, operation: '删除' });
   }
 });
 var myApp = new MyApp();
 myApp.attach(document.body);
-},{"san":11}],26:[function(require,module,exports) {
+},{"san":6}],31:[function(require,module,exports) {
 
 var OVERLAY_ID = '__parcel__error__overlay__';
 
@@ -9389,7 +9390,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = '' || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + '59373' + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + '53514' + '/');
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);
 
@@ -9528,5 +9529,5 @@ function hmrAccept(bundle, id) {
     return hmrAccept(global.parcelRequire, id);
   });
 }
-},{}]},{},[26,6])
+},{}]},{},[31,3])
 //# sourceMappingURL=/main.5cb6121e.map

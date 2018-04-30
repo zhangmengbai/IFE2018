@@ -2,8 +2,8 @@ import san from "san"
 
 var MyApp = san.defineComponent({
   template: ''
-      +'<div>'
-      + '<button on-click="add">添加</button>'
+      +'<div class="main">'
+      + '<button id="add" on-click="add">添加</button>'
       + '<table>'
       +   '<tr>'
       +     '<th>姓名</th>'
@@ -12,11 +12,13 @@ var MyApp = san.defineComponent({
       +   '</tr>'
       +   '<tr san-for="p, index in persons">'
       +     '<td>{{p.name}}</td>'
-      +     '<td>{{p.state}}</td>'
+      +     '<td san-if="p.status === 1">合格</td>'
+      +     '<td san-elif="p.status === 2">不合格</td>'
+      +     '<td san-else>待审核</td>'
       +     '<td>'
-      +       '<button on-click="change(index)" san-if="p.state=合格">{{p.operation}}</button>'
-      +       '<button on-click="change(index)"san-elif="p.state=不合格">{{p.operation}}</button>'
-      +       '<button on-click="change(index)" san-else="p.state=待审核">{{p.operation}}</button>'
+      +       '<button class="del" on-click="change(index)" san-if="p.status === 1">{{p.operation}}</button>'
+      +       '<button class="del" on-click="change(index)" san-elif="p.status === 2">{{p.operation}}</button>'
+      +       '<button class="pass" on-click="change(index)" san-else>{{p.operation}}</button>'
       +     '</td>'
       +   '</tr>'
       + '</table>'
@@ -24,28 +26,28 @@ var MyApp = san.defineComponent({
   initData: function () {
     return {
       persons: [
-        {name: '张三', state: '合格', operation: '删除'},
-        {name: '李四', state: '不合格', operation: '删除'},
-        {name: '王五', state: '待审核', operation: '审核'},
-        {name: '赵六', state: '待审核', operation: '审核'},              
-        {name: '孙七', state: '待审核', operation: '审核'}
+        {name: '张三', status: 1, operation: '删除'},
+        {name: '李四', status: 2, operation: '删除'},
+        {name: '王五', status: 3, operation: '审核'},
+        {name: '赵六', status: 3, operation: '审核'},              
+        {name: '孙七', status: 3, operation: '审核'}
       ]
     };
   },
+  // 将不同按钮功能整合在一个方法内，通过判断status来确定相应事件
   change (index) {
-    let sValue = this.data.get("persons[" + index + "].state");
-    console.log(sValue);
-    if(sValue === '合格'||sValue === '不合格'){
+    let sValue = this.data.get("persons[" + index + "].status");
+    if(sValue === 1||sValue === 2){
       this.data.removeAt("persons", index);
-      console.log(sValue);
     }
-    else if(sValue === '待审核'){
-      this.data.set("persons[" + index + "].state", "合格");
+    else if(sValue === 3){
+      this.data.set("persons[" + index + "].status", 1);
       this.data.set("persons[" + index + "].operation", "删除");
     }
   },
+  // 添加数据，简单实现了一下，以后再添加自定义数据功能和随机生成数据功能
   add () {
-    this.data.push("persons",{name: '吃瓜群众', state: '不合格', operation: '删除'});
+    this.data.push("persons",{name: '吃瓜群众', status: 2, operation: '删除'});
   }
 });
 var myApp = new MyApp();
