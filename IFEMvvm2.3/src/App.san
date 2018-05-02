@@ -1,0 +1,62 @@
+<template>
+  <div class="container">
+    <p>通过控制class来实现改变</p>
+    <div class="def {{change1 ? 'change' : ''}}" on-click="changeClass1">点击改变样式</div>
+    <div style="display: inline-block;">
+      <p>通过控制style来实现改变:点击下面图形查看效果</p>
+      <div style="height: 300px; 
+      width: 300px; 
+      transition: 1s all ease;
+      font-size:20px;
+      color: #FFF;
+      text-align: center;
+      line-height;300px;
+      {{change2 ? 'height: 0px;width: 0px;background: #41B883;border-top: 300px solid #41B883;border-right: 300px solid #41B883;border-bottom: 300px solid #35495E;border-left: 300px solid #35495E;border-radius:100%;' : 'background: #80B3FF'}}" 
+      on-click="changeClass2"></div>
+    </div>      
+  </div>
+</template>
+
+<script>
+export default {
+  initData() {
+    return {
+      change1: false,
+      change2: false
+    }
+  },
+  changeClass1() {
+    this.data.set('change1', !this.data.raw.change1);
+  },
+  changeClass2() {
+    this.data.set('change2', !this.data.raw.change2);
+  },
+}
+</script>
+
+<style>
+.container {
+  width: 80%;
+  margin: auto;
+}
+.def {
+  height: 100px;
+  width: 100%;
+  background: #FFCE45;
+  transition: all 1s ease;
+  font-size:20px;
+  color: black;
+  text-align: center;
+  line-height: 100px;
+}
+.change {
+  display: inline-block;
+  height: 1000px;
+  width: 400px;
+  background: #DD564A;
+  line-height: 1000px;
+  color: #FFF;
+  font-size: 40px;
+  font-weight: bold;
+}
+</style>
