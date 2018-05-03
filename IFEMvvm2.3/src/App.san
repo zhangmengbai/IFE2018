@@ -25,6 +25,7 @@ export default {
       change2: false
     }
   },
+  // raw不进行转义
   changeClass1() {
     this.data.set('change1', !this.data.raw.change1);
   },
